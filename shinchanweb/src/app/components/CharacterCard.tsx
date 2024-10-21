@@ -1,6 +1,6 @@
 "use client"
 import React from 'react';
-import { Card, CardBody, CardFooter, Stack, Heading, Divider, Button } from '@chakra-ui/react';
+import { Card, CardBody, CardFooter, Stack, Heading, Divider} from '@chakra-ui/react';
 import InfoDrawer from '../InfoPage/InfoDrawer';
 
 const CharacterCard = () => {
