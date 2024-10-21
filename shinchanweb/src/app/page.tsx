@@ -1,9 +1,11 @@
 import Image from "next/image";
 import { Card, CardHeader, CardBody, CardFooter, Stack, Heading,Text, Divider, ButtonGroup, Button } from '@chakra-ui/react'
+import { Input } from '@chakra-ui/react'
 
 export default function Home() {
   return (
     <div>
+<Input placeholder='Search' />
 <Card maxW='sm' shadow="lg">
   <CardBody>
     <img src="" alt="" />
