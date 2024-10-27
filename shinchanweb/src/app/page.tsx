@@ -30,7 +30,6 @@ export default function Home() {
       <CharacterCard />
       <CharacterCard />
       <CharacterCard />
-      <CharacterCard />
       </div>
 
 
