@@ -1,6 +1,6 @@
-"use client"
+"use client";
 import { useState } from 'react';
-import { Input, Box, Text } from '@chakra-ui/react';
+import { Input, Box, Text, Select } from '@chakra-ui/react';
 import CharacterCard from './components/CharacterCard';
 
 interface Character {
@@ -13,10 +13,10 @@ interface Character {
 // Define the interface for the Elasticsearch hit structure
 interface ESCharacterHit {
   _source: {
-    name: string;
-    biography: string;
-    wikiLink: string;
-    imageLink: string;
+    Name: string;          // Use correct casing for the keys
+    Biography: string;
+    'Wiki Link': string;
+    'Image Link': string;
   };
 }
 
@@ -24,9 +24,14 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState<Character[]>([]);
   const [loading, setLoading] = useState(false);
+  const [searchOption, setSearchOption] = useState('oneWord'); // Default option
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSearchOption(event.target.value);
   };
 
   const sendSearchRequest = async () => {
@@ -40,7 +45,7 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query: searchTerm }),
+        body: JSON.stringify({ query: searchTerm, option: searchOption }), // Send selected option
       });
 
       if (!response.ok) {
@@ -49,7 +54,7 @@ export default function Home() {
 
       const data = await response.json();
 
-      const characters: Character[] = data.map((hit: any) => ({
+      const characters: Character[] = data.map((hit: ESCharacterHit) => ({
         imageLink: `http://localhost:3001/proxy/image?url=${encodeURIComponent(hit._source['Image Link'])}` || '',
         name: hit._source['Name'] || '',
         wikiLink: hit._source['Wiki Link'] || '',
@@ -69,10 +74,24 @@ export default function Home() {
     <Box>
       <Box className='flex' alignItems="center" p="4">
         <img className="ml-6 h-16" src='/logo.png' alt="Logo" />
+        
+        <Select 
+          placeholder='Select search option' 
+          my="15" 
+          mx="2"
+          onChange={handleOptionChange} 
+          width="200px"
+        >
+          <option value="oneWord">One Word Query</option>
+          <option value="multipleWords">Multiple Word Query</option>
+          <option value="partialMatch">Partial Match</option>
+          <option value="ranking">Ranking</option>
+        </Select>
+
         <Input
           placeholder='Search'
           my="15"
-          mx="10"
+          mx="2"
           bg="white"
           width="600px"
           value={searchTerm}
@@ -87,7 +106,7 @@ export default function Home() {
 
       {loading ? (
         <Box display="flex" justifyContent="center" alignItems="center" height="80vh">
-          <img src="/dance.gif" alt="Dancing" /> {/* Use your dancing GIF path here */}
+          <img src="/dance.gif" alt="Dancing" style={{ width: '100px', height: '100px' }} />
         </Box>
       ) : (
         <Box className="flex flex-wrap justify-start mx-10">
