@@ -73,14 +73,19 @@ export default function Home() {
   return (
     <Box>
       <Box className='flex' alignItems="center" p="4">
+        <div className=' flex-col ml-4'>
         <img className="ml-6 h-16" src='/logo.png' alt="Logo" />
+        <h1><b>Shinchan Search Engine</b></h1>
+        </div>
         
-        <Select 
-          placeholder='Select search option' 
-          my="15" 
+
+        <Select
+          placeholder='Select search option'
+          my="15"
           mx="2"
-          onChange={handleOptionChange} 
+          onChange={handleOptionChange}
           width="200px"
+          className='ml-2'
         >
           <option value="oneWord">One Word Query</option>
           <option value="multipleWords">Multiple Word Query</option>
@@ -121,7 +126,10 @@ export default function Home() {
               />
             ))
           ) : (
-            <Text>No results found. Try a different search term.</Text>
+            <div className=' ml-[550px]'>
+              <img src="dance.gif" className='ml-8' />
+              <Text>No results found. Try a different search term.</Text>
+            </div>
           )}
         </Box>
       )}
