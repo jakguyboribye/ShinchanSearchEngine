@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { useState } from 'react';
 import { Input, Box, Text } from '@chakra-ui/react';
 import CharacterCard from './components/CharacterCard';
@@ -8,6 +8,16 @@ interface Character {
   name: string;
   wikiLink: string;
   biography: string;
+}
+
+// Define the interface for the Elasticsearch hit structure
+interface ESCharacterHit {
+  _source: {
+    name: string;
+    biography: string;
+    wikiLink: string;
+    imageLink: string;
+  };
 }
 
 export default function Home() {
