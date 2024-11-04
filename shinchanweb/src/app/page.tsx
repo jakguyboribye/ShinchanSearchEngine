@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-import { Input } from '@chakra-ui/react'
-import CharacterCard from "./components/CharacterCard";
-=======
 "use client"
 import { useState } from 'react';
 import { Input, Spinner, Box, Text } from '@chakra-ui/react';
@@ -14,7 +10,6 @@ interface Character {
   wikiLink: string;
   biography: string;
 }
->>>>>>> Stashed changes
 
 // Define the interface for the Elasticsearch hit structure
 interface ESCharacterHit {
@@ -27,8 +22,6 @@ interface ESCharacterHit {
 }
 
 export default function Home() {
-<<<<<<< Updated upstream
-=======
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState<Character[]>([]);
   const [loading, setLoading] = useState(false);
@@ -76,40 +69,45 @@ export default function Home() {
     }
   };
 
->>>>>>> Stashed changes
   return (
-    <div>
-      <div className='flex'>
-      <h1 className=' mt-6 ml-6'>logo</h1>
-      <Input placeholder='Search' my='15' mx='10' bg='white' w='600px' />
-      </div>
-      
-      
-      <div className='flex flex-wrap justify-start mx-10'>
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      <CharacterCard />
-      </div>
+    <Box>
+      <Box className='flex' alignItems="center" p="4">
+        <Text fontSize="2xl" ml="6">Logo</Text>
+        <Input
+          placeholder='Search'
+          my="15"
+          mx="10"
+          bg="white"
+          width="600px"
+          value={searchTerm}
+          onChange={handleInputChange}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              sendSearchRequest(); // Trigger search on Enter
+            }
+          }}
+        />
+      </Box>
 
-
-
-    </div>
+      {loading ? (
+        <Spinner size="lg" color="blue.500" />
+      ) : (
+        <Box className="flex flex-wrap justify-start mx-10">
+          {results.length > 0 ? (
+            results.map((character, index) => (
+              <CharacterCard
+                key={index}
+                imageLink={character.imageLink}
+                name={character.name}
+                wikiLink={character.wikiLink}
+                biography={character.biography}
+              />
+            ))
+          ) : (
+            <Text>No results found. Try a different search term.</Text>
+          )}
+        </Box>
+      )}
+    </Box>
   );
 }
