@@ -5,8 +5,8 @@ How to run:
 in terminal
 ```
 cd .\shinchanweb\
-run npm i
-run npm start
+npm i
+npm start
 ```
 
 visit web at link:
