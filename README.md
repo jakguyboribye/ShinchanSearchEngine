@@ -6,6 +6,10 @@ in terminal
 ```
 cd .\shinchanweb\
 npm i
+npm i express
+npm i axios
+npm i @elastic/elasticsearch
+npm i config
 npm start
 ```
 
