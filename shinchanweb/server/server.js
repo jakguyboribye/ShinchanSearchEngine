@@ -7,18 +7,18 @@ const client = require('./elasticsearch/client');
 const app = express();
 
 app.use(cors());
-app.use(express.json()); // To handle JSON requests
+app.use(express.json()); 
 
-// Proxy endpoint for images
+
 app.get('/proxy/image', async (req, res) => {
-  const { url } = req.query; // Get the image URL from the query parameter
+  const { url } = req.query; 
 
   try {
     const response = await axios.get(url, { responseType: 'arraybuffer' });
     const contentType = response.headers['content-type'];
 
     res.set('Content-Type', contentType);
-    res.send(response.data); // Send the image data back to the client
+    res.send(response.data);
   } catch (error) {
     console.error('Error fetching image:', error);
     res.status(500).send('Error fetching image');
@@ -26,16 +26,16 @@ app.get('/proxy/image', async (req, res) => {
 });
 
 function capitalizeFirstLetter(string) {
-  if (!string) return ''; // Handle empty strings
+  if (!string) return ''; 
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
 // Updated endpoint for a single query
 app.post('/search', async (req, res) => {
-  let searchTerm = req.body.query; // Get the original search term
-  const searchOption = req.body.option; // Get the selected search option
+  let searchTerm = req.body.query; 
+  const searchOption = req.body.option; 
   searchTerm = capitalizeFirstLetter(searchTerm); // Capitalize the first letter
-  console.log('Search Term:', searchTerm, 'Search Option:', searchOption); // Log for debugging
+  console.log('Search Term:', searchTerm, 'Search Option:', searchOption); // Log for debug
 
   async function sendESRequest() {
     try {
@@ -85,18 +85,18 @@ app.post('/search', async (req, res) => {
                 should: [
                   {
                     query_string: {
-                      query: `*${searchTerm}*`, // Partial match on Name
+                      query: `*${searchTerm}*`, // Partial match
                       fields: ['Name'],
-                      fuzziness: 'AUTO', // Fuzzy matching enabled
-                      boost: 2.0 // Boost for Name matches
+                      fuzziness: 'AUTO', // Fuzzy match
+                      boost: 2.0 // Boost for Name 
                     }
                   },
                   {
                     query_string: {
-                      query: `*${searchTerm}*`, // Partial match on Biography
+                      query: `*${searchTerm}*`, // Partial match 
                       fields: ['Biography'],
-                      fuzziness: 'AUTO', // Fuzzy matching enabled
-                      boost: 1.0 // Normal weight for Biography
+                      fuzziness: 'AUTO', // Fuzzy matching 
+                      boost: 1.0 // Normal weight for Bio
                     }
                   }
                 ]
@@ -138,15 +138,15 @@ app.post('/search', async (req, res) => {
         index: 'shinchanfinal', // Elasticsearch index
         body: {
           ...body,
-          size: 5, // Limit the number of results; adjust as needed
+          size: 15, // Limit the number of results; adjust as needed
         }
       });
   
-      console.log('Search Results:', response.hits.hits); // Log the resulting JSON to the console
-      return res.json(response.hits.hits); // Send results as JSON response
+      console.log('Search Results:', response.hits.hits); // Log 
+      return res.json(response.hits.hits); // Send JSON
     } catch (error) {
       console.error('Elasticsearch request failed:', error);
-      if (!res.headersSent) { // Check if response has already been sent
+      if (!res.headersSent) { 
         return res.status(500).json({ error: 'Elasticsearch request failed' });
       }
     }
